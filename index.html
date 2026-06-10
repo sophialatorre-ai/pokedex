@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex Minimalista</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="pokedex-card">
+        <div class="header">
+          <div>
+            <p class="eyebrow">Pokédex</p>
+            <h1>Procure um Pokémon</h1>
+          </div>
+          <div class="badge">PokéAPI</div>
+        </div>
+
+        <div class="search-area">
+          <label class="search-box">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Nome ou número do Pokémon"
+              autocomplete="off"
+            />
+          </label>
+          <button id="searchButton" class="button primary">Buscar</button>
+        </div>
+
+        <div class="status-bar" id="statusBar">Digite um nome ou número para começar</div>
+
+        <div class="generation-panel">
+          <div class="generation-header">
+            <span>Gerações</span>
+            <span id="generationLabel">Todas</span>
+          </div>
+          <div class="generation-list">
+            <button class="generation-button button tertiary" data-gen="1">Gen 1</button>
+            <button class="generation-button button tertiary" data-gen="2">Gen 2</button>
+            <button class="generation-button button tertiary" data-gen="3">Gen 3</button>
+            <button class="generation-button button tertiary" data-gen="4">Gen 4</button>
+            <button class="generation-button button tertiary" data-gen="5">Gen 5</button>
+            <button class="generation-button button tertiary" data-gen="6">Gen 6</button>
+            <button class="generation-button button tertiary" data-gen="7">Gen 7</button>
+            <button class="generation-button button tertiary" data-gen="8">Gen 8</button>
+            <button class="generation-button button tertiary" data-gen="9">Gen 9</button>
+          </div>
+        </div>
+
+        <div class="pokemon-card" id="pokemonCard">
+          <div class="pokemon-image-shell">
+            <img id="pokemonImage" src="" alt="Imagem do Pokémon" />
+          </div>
+          <div class="pokemon-info">
+            <div class="pokemon-meta">
+              <span class="pokemon-id" id="pokemonId">#000</span>
+              <h2 id="pokemonName">---</h2>
+            </div>
+            <div class="pokemon-types-block">
+              <span class="section-label">Tipagens</span>
+              <div class="pokemon-types" id="pokemonTypes"></div>
+            </div>
+            <div class="pokemon-characteristics">
+              <div class="characteristic-item">
+                <span>Altura</span>
+                <strong id="pokemonHeight">--</strong>
+              </div>
+              <div class="characteristic-item">
+                <span>Peso</span>
+                <strong id="pokemonWeight">--</strong>
+              </div>
+              <div class="characteristic-item">
+                <span>Habilidades</span>
+                <strong id="pokemonAbilities">--</strong>
+              </div>
+            </div>
+            <div class="pokemon-stats" id="pokemonStats"></div>
+          </div>
+        </div>
+
+        <div class="navigation">
+          <button id="prevButton" class="button secondary">Anterior</button>
+          <button id="nextButton" class="button secondary">Próximo</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
