@@ -13,6 +13,9 @@ const pokemonStats = document.getElementById("pokemonStats");
 const pokemonHeight = document.getElementById("pokemonHeight");
 const pokemonWeight = document.getElementById("pokemonWeight");
 const pokemonAbilities = document.getElementById("pokemonAbilities");
+const pokemonRarityLabel = document.getElementById("pokemonRarityLabel");
+const rarityFill = document.getElementById("rarityFill");
+const pokemonRarityNote = document.getElementById("pokemonRarityNote");
 const generationLabel = document.getElementById("generationLabel");
 const generationButtons = document.querySelectorAll(".generation-button");
 
@@ -37,7 +40,10 @@ async function fetchPokemon(query) {
     }
 
     const pokemon = await response.json();
-    renderPokemon(pokemon);
+    const speciesResponse = await fetch(pokemon.species.url);
+    const species = speciesResponse.ok ? await speciesResponse.json() : null;
+
+    renderPokemon(pokemon, species);
     currentPokemonId = pokemon.id;
     statusBar.textContent = `Dados carregados para ${capitalize(pokemon.name)}`;
   } catch (error) {
@@ -47,7 +53,7 @@ async function fetchPokemon(query) {
   }
 }
 
-function renderPokemon(pokemon) {
+function renderPokemon(pokemon, species) {
   pokemonImage.src =
     pokemon.sprites.other["official-artwork"].front_default || pokemon.sprites.front_default || "";
   pokemonImage.alt = `Imagem de ${pokemon.name}`;
@@ -66,6 +72,11 @@ function renderPokemon(pokemon) {
   pokemonAbilities.textContent = pokemon.abilities
     .map((item) => capitalize(item.ability.name))
     .join(", ");
+
+  const rarity = getRarityInfo(species, pokemon.id);
+  pokemonRarityLabel.textContent = rarity.label;
+  rarityFill.style.width = rarity.fill + "%";
+  pokemonRarityNote.textContent = rarity.note;
 
   pokemonStats.innerHTML = pokemon.stats
     .map((stat) => {
@@ -119,6 +130,9 @@ function showError(message) {
   pokemonHeight.textContent = "--";
   pokemonWeight.textContent = "--";
   pokemonAbilities.textContent = "--";
+  pokemonRarityLabel.textContent = "Desconhecida";
+  rarityFill.style.width = "0%";
+  pokemonRarityNote.textContent = "Sem dados de raridade disponíveis";
 }
 
 function setLoadingState(isLoading) {
@@ -145,12 +159,50 @@ function formatStatName(name) {
     .replace("speed", "Speed");
 }
 
+function getRarityInfo(species, pokemonId) {
+  if (!species) {
+    return {
+      label: "Desconhecida",
+      fill: 20,
+      note: "Sem dados de raridade disponíveis",
+      habitat: "Desconhecido",
+    };
+  }
+
+  const captureRate = species.capture_rate || 45;
+  const isLegendary = species.is_legendary;
+  const isMythical = species.is_mythical;
+  const habitat = species.habitat ? capitalize(species.habitat.name) : "Desconhecido";
+  let label = "Comum";
+  let fill = Math.min(100, Math.max(12, 100 - captureRate));
+  let note = `Habitat: ${habitat}`;
+
+  if (isLegendary || isMythical) {
+    label = "Lendário";
+    fill = 100;
+    note = `Espécie rara — ${habitat}`;
+  } else if (captureRate < 45) {
+    label = "Raro";
+    fill = 80;
+  } else if (captureRate < 90) {
+    label = "Incomum";
+    fill = 55;
+  }
+
+  return {
+    label,
+    fill,
+    note,
+    habitat,
+  };
+}
+
 function capitalize(text) {
   return String(text).charAt(0).toUpperCase() + String(text).slice(1);
 }
 
 function handleSearch() {
-  const query = searchInput.value || currentPokemonId;
+  const query = searchInput.value.trim() || currentPokemonId;
   fetchPokemon(query);
 }
 

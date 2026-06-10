@@ -210,9 +210,22 @@ input[type="text"]:focus {
   gap: 14px;
 }
 
-.pokemon-info {
-  display: grid;
-  gap: 20px;
+@media (max-width: 720px) {
+  .pokemon-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-aux {
+    gap: 12px;
+  }
+
+  .pokemon-characteristics {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 .section-label {
@@ -228,6 +241,48 @@ input[type="text"]:focus {
 .pokemon-types-block {
   display: grid;
   gap: 12px;
+}
+
+.pokemon-aux {
+  display: grid;
+  gap: 16px;
+}
+
+.rarity-card {
+  background: #16181c;
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  border-radius: 22px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.rarity-status {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.rarity-track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(248, 113, 113, 0.15);
+  overflow: hidden;
+}
+
+.rarity-fill {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ef4444 0%, #f97316 100%);
+  transition: width 0.35s ease;
+}
+
+.rarity-note {
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
 .characteristic-item {
